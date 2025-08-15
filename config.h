@@ -6,7 +6,7 @@ static const unsigned int gappx = 20;   /* gaps between windows */
 static const unsigned int snap = 20;    /* snap pixel */
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 0;            /* 0 means bottom bar */
-/* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as
+/* 0 means that vdwm will calculate bar height, >= 1 means vdwm will user_bh as
  * bar height */
 static const int user_bh = 0;
 static const char *fonts[] = {"JetBrainsMono Nerd Font:size=11:antialias=true"};
@@ -34,8 +34,7 @@ static const char *colors[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = {"I",  "II",  "III",  "IV", "V",
-                             "VI", "VII", "VIII", "IX"};
+static const char *tags[] = {"1",  "2",  "3",  "4", "5", "6", "7", "8", "9"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -45,8 +44,7 @@ static const Rule rules[] = {
     /* class             instance              title                      tags
        mask     isfloating   isterminal  noswallow  monitor */
     {"Gimp", NULL, NULL, 0, 0, 0, 0, -1},
-    {"Firefox", NULL, NULL, 0, 0, 0, -1, -1},
-    {"qutebrowser", NULL, NULL, 0, 0, 0, -1, -1},
+    {"Zen", NULL, NULL, 0, 0, 0, -1, -1},
     {"St", NULL, NULL, 0, 0, 1, 0, -1},
     {NULL, NULL, "Event Tester", 0, 0, 0, 1, -1}, /* xev */
     {"st-256color", "st-256color", "pulsemixer", 0, 1, 0, 0, -1},
@@ -76,7 +74,7 @@ static const Layout layouts[] = {
 };
 
 /*======= APPLICATIONS USED =======
- * Browser:              firefox, qutebrowser
+ * Browser:              Zen
  * Notes:                obsidian
  * Ide:                  neovim
  * Music:                ncmpcpp + mpd
@@ -120,7 +118,7 @@ static const char *brightupsomemore[] = {"xbacklight", "+10", NULL};
 static const char *brightdnsomemore[] = {"xbacklight", "-10", NULL};
 
 /* Other Application */
-static const char *web[] = {"qutebrowser", NULL};
+static const char *web[] = {"zen", NULL};
 static const char *pass[] = {"keepassxc", NULL};
 static const char *pdf[] = {"zathura", NULL};
 static const char *ss[] = {"flameshot", "gui", NULL};
@@ -136,7 +134,6 @@ static const char *slp[] = {"slock", "loginctl", "suspend", "-i", NULL};
       {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
       {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd)                                                             \
   {                                                                            \
     .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
@@ -191,7 +188,7 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_q, spawn, {.v = exitses}},
     {MODKEY, XK_F11, spawn, {.v = slp}},
 
-    /*                              DWM SETTINGS                        */
+    /*                              VDWM SETTINGS                        */
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},

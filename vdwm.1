@@ -1,0 +1,161 @@
+.\" vdwm – Very Dynamic Window Manager
+.\" SPDX-License-Identifier: MIT
+.TH VDWM 1 "August 2025" "vdwm\-VERSION"
+.SH NAME
+vdwm \- a very dynamic window manager
+.SH SYNOPSIS
+.B vdwm
+.RB [ \-v ]
+.SH DESCRIPTION
+\fBvdwm\fP is a lightweight, tiling window manager for X11 that extends the
+classic \fBdwm\fP workflow with extra layouts, adjustable gaps and a
+bottom-aligned status bar.  Windows are organised by \fItags\fP, and a view can
+display one or many tags at once.  Focus is indicated with a colour-encoded
+zero-pixel border.
+.P
+Key features:
+.IP \[bu] 2
+Runtime-adjustable 20 px gaps between clients.
+.IP \[bu]
+Status bar at the screen bottom (toggleable, fixed height optional).
+.IP \[bu]
+Additional layouts: \fIspiral\fP, \fIdwindle\fP, \fIcenteredmaster\fP and
+\fIcenteredfloatingmaster\fP, alongside \fItile\fP, \fIfloating\fP and
+\fImonocle\fP.
+.IP \[bu]
+Scratch-pad terminal (Mod1-Shift-p) and automatic swallowing of transient
+floating windows.
+.IP \[bu]
+Extensive key bindings for common CLI/TUI and GUI programs; see
+.BR KEYBOARD COMMANDS .
+.SH OPTIONS
+.TP
+.B \-v
+Print version information to \fBstderr\fP and exit.
+.SH USAGE
+.SS Status-bar interaction
+.TP
+.B Button1
+View the clicked tag; clicking the layout symbol toggles between the two most
+recent layouts.
+.TP
+.B Button3
+Toggle the clicked tag’s visibility.
+.TP
+.B Mod1\-Button1
+Apply the clicked tag to the focused window.
+.TP
+.B Mod1\-Button3
+Toggle the clicked tag on the focused window.
+.SS Keyboard commands
+The modifier is \fBMod1\fP (Alt).  Core window-manager bindings:
+.TP
+.BR Mod1\-Shift\-Return
+Launch \fBst\fP.
+.TP
+.BR Mod1\-d
+Launch \fBdmenu\fP.
+.TP
+.BR Mod1\-b
+Toggle the status bar.
+.TP
+.BR Mod1\-t ", " Mod1\-f ", " Mod1\-m
+Tile, floating or monocle layout.
+.TP
+.BR Mod1\-y " / " Mod1\-Shift\-y
+Centered master / centered floating-master.
+.TP
+.BR Mod1\-u " / " Mod1\-Shift\-u
+Spiral / dwindle.
+.TP
+.BR Mod1\-space
+Restore previous layout.
+.TP
+.BR Mod1\-j ", " Mod1\-k
+Focus next / previous window.
+.TP
+.BR Mod1\-i ", " Mod1\-d
+Increase / decrease master-area client count.
+.TP
+.BR Mod1\-h ", " Mod1\-l
+Shrink / grow master-area width.
+.TP
+.BR Mod1\-Return
+Promote focused window to master.
+.TP
+.BR Mod1\-Shift\-c
+Close focused window.
+.TP
+.BR Mod1\-Shift\-space
+Toggle floating state.
+.TP
+.BR Mod1\-Tab
+Restore previous tag set.
+.TP
+.BR Mod1\-[1..9] " / " Mod1\-Shift\-[1..9]
+View / tag windows.
+.TP
+.BR Mod1\--
+Decrease gaps.
+.TP
+.BR Mod1\-=
+Increase gaps.
+.TP
+.BR Mod1\-Shift\-=
+Reset gaps to 0.
+.TP
+.BR Mod1\-Shift\-x
+Quit (\fBMod1\-Control\-Shift\-q\fP to restart).
+.P
+See
+.BR config.h
+for the full, application-specific binding list.
+.SS Mouse commands
+.TP
+.BR Mod1\-Button1
+Move window (forces floating).
+.TP
+.BR Mod1\-Button2
+Toggle floating.
+.TP
+.BR Mod1\-Button3
+Resize window (forces floating).
+.SH FILES
+Startup scripts are searched in order:
+.IP "1. \$XDG_DATA_HOME/vdwm"
+.IP "2. \$HOME/.local/share/vdwm"
+.P
+If present, the following scripts are executed:
+.TP 15
+.B autostart_blocking.sh
+Runs synchronously; vdwm waits for completion.
+.TP
+.B autostart.sh
+Runs asynchronously before the event loop.
+.SH CUSTOMISATION
+All behaviour is configured in
+.BR config.h
+and compiled in:
+.P
+.RS
+.B make clean install
+.RE
+.SH SIGNALS
+.TP
+.B SIGHUP
+Restart vdwm (after recompiling).
+.TP
+.B SIGTERM
+Exit cleanly.
+.SH SEE ALSO
+.BR dmenu (1),
+.BR st (1)
+.SH PROJECT
+Source code and issue tracker:
+.P
+.RS
+https://github.com/iamb4uc/vdwm
+.RE
+.SH BUGS
+Report problems or submit patches by opening an issue or pull request at
+https://github.com/iamb4uc/vdwm .
