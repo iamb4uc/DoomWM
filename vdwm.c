@@ -48,7 +48,7 @@
 #include <sys/sysctl.h>
 #endif /* __OpenBSD */
 
-#include "drw.h"
+#include "vdrw.h"
 #include "util.h"
 
 /* macros */

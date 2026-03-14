@@ -8,29 +8,29 @@ static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 0;            /* 0 means bottom bar */
 /* 0 means that vdwm will calculate bar height, >= 1 means vdwm will user_bh as
  * bar height */
-static const int user_bh = 0;
-static const char *fonts[] = {"JetBrainsMono Nerd Font:size=11:antialias=true"};
+static const int user_bh = 30;
+static const char *fonts[] = {"JetBrainsMono Nerd Font:size=12:antialias=true"};
 static const char dmenufont[] =
     "JetBrainsMono Nerd Font:size=15:antialias=true";
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = {"st", "-t",     scratchpadname,
+static const char *scratchpadcmd[] = {"alacritty", "-t",     scratchpadname,
                                       "-g", "120x34", NULL};
 /* 1 means swallow floating windows by default */
 static const int swallowfloating = 1;
-static const char col_gray1[] = "#282828";
-static const char col_gray2[] = "#282828";
-static const char col_gray3[] = "#ebdbb2";
-static const char col_gray4[] = "#282828";
-static const char col_cyan[] = "#ebdbb2";
+static const char col_gray1[] = "#1e1e2e";
+static const char col_gray2[] = "#1e1e2e";
+static const char col_gray3[] = "#cdd6f4";
+static const char col_gray4[] = "#1e1e2e";
+static const char col_cyan[] = "#cdd6f4";
 static const char *colors[][3] = {
     /*               fg         bg         border   */
     [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
     [SchemeSel] = {col_gray4, col_cyan, col_cyan},
-    [SchemeStatus] = {col_cyan, col_gray1, "#282828"},
-    [SchemeTagsSel] = {col_gray4, col_cyan, "#282828"},
-    [SchemeTagsNorm] = {col_gray3, col_gray1, "#282828"},
-    [SchemeInfoSel] = {col_gray4, col_cyan, "#282828"},
-    [SchemeInfoNorm] = {col_gray3, col_gray1, "#282828"},
+    [SchemeStatus] = {col_cyan, col_gray1, "#1e1e2e"},
+    [SchemeTagsSel] = {col_gray4, col_cyan, "#1e1e2e"},
+    [SchemeTagsNorm] = {col_gray3, col_gray1, "#1e1e2e"},
+    [SchemeInfoSel] = {col_gray4, col_cyan, "#1e1e2e"},
+    [SchemeInfoNorm] = {col_gray3, col_gray1, "#1e1e2e"},
 };
 
 /* tagging */
@@ -44,12 +44,12 @@ static const Rule rules[] = {
     /* class             instance              title                      tags
        mask     isfloating   isterminal  noswallow  monitor */
     {"Gimp", NULL, NULL, 0, 0, 0, 0, -1},
-    {"Zen", NULL, NULL, 0, 0, 0, -1, -1},
-    {"St", NULL, NULL, 0, 0, 1, 0, -1},
+    {"Firefox", NULL, NULL, 0, 0, 0, -1, -1},
+    {"alacritty", NULL, NULL, 0, 0, 1, 0, -1},
     {NULL, NULL, "Event Tester", 0, 0, 0, 1, -1}, /* xev */
-    {"st-256color", "st-256color", "pulsemixer", 0, 1, 0, 0, -1},
-    /*{"st-256color", "st-256color", "ncmpcpp", 0, 1, 0, 0, -1},*/
-    {"st-256color", "st-256color", "peaclock", 0, 1, 0, 0, -1},
+    {"alacritty", "alacritty", "pulsemixer", 0, 1, 0, 0, -1},
+    /*{"alacritty", "alacritty", "ncmpcpp", 0, 1, 0, 0, -1},*/
+    {"alacritty", "alacritty", "peaclock", 0, 1, 0, 0, -1},
     {NULL, NULL, "Picture in picture", 0, 1, 0, 0, -1},
 };
 
@@ -74,11 +74,11 @@ static const Layout layouts[] = {
 };
 
 /*======= APPLICATIONS USED =======
- * Browser:              Zen
+ * Browser:              Firefox
  * Notes:                obsidian
  * Ide:                  neovim
  * Music:                ncmpcpp + mpd
- * Terminal:             st
+ * Terminal:             alacritty
  * Application Launcher: dmenu
  * Network:              NetworkManager
  * Utility:              htop, pulsemixer, xbacklight
@@ -90,17 +90,17 @@ static const Layout layouts[] = {
  */
 
 /* TUI Application */
-static const char *nvim[] = {"st", "-e", "nvim", NULL};
-static const char *tmuxnew[] = {"st", "-e", "tmux", NULL};
-static const char *tmuxattach[] = {"st", "-e", "tmux", "a", NULL};
-static const char *fb[] = {"st", "-e", "lfub", NULL};
-static const char *mixer[] = {"st", "-e", "pulsemixer", NULL};
-static const char *htop[] = {"st", "-e", "htop", NULL};
-static const char *music[] = {"st", "-e", "ncmpcpp", NULL};
-static const char *netman[] = {"st", "-e", "nmtui", NULL};
+static const char *nvim[] = {"alacritty", "-e", "nvim", NULL};
+static const char *tmuxnew[] = {"alacritty", "-e", "tmux", NULL};
+static const char *tmuxattach[] = {"alacritty", "-e", "tmux", "a", NULL};
+static const char *fb[] = {"alacritty", "-e", "lfub", NULL};
+static const char *mixer[] = {"alacritty", "-e", "pulsemixer", NULL};
+static const char *htop[] = {"alacritty", "-e", "htop", NULL};
+static const char *music[] = {"alacritty", "-e", "ncmpcpp", NULL};
+static const char *netman[] = {"alacritty", "-e", "nmtui", NULL};
 static const char *netkill[] = {"nmcli", "r", "wifi", "off", NULL};
 static const char *netrecover[] = {"nmcli", "r", "wifi", "on", NULL};
-static const char *chkdsk[] = {"st", "-e", "ncdu", NULL};
+static const char *chkdsk[] = {"alacritty", "-e", "ncdu", NULL};
 static const char *exitses[] = {"sysact", NULL};
 
 /* Music */
@@ -141,7 +141,7 @@ static const char *slp[] = {"slock", "loginctl", "suspend", "-i", NULL};
 
 /* commands */
 static const char *dmenucmd[] = {"dmenu_run", NULL};
-static const char *termcmd[] = {"st", NULL};
+static const char *termcmd[] = {"alacritty", NULL};
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
