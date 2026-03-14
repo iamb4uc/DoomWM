@@ -118,7 +118,7 @@ static const char *brightupsomemore[] = {"xbacklight", "+10", NULL};
 static const char *brightdnsomemore[] = {"xbacklight", "-10", NULL};
 
 /* Other Application */
-static const char *web[] = {"zen", NULL};
+static const char *web[] = {"firefox", NULL};
 static const char *pass[] = {"keepassxc", NULL};
 static const char *pdf[] = {"zathura", NULL};
 static const char *ss[] = {"flameshot", "gui", NULL};

@@ -1,4 +1,4 @@
-dwm is an extremely fast, small, and dynamic window
+vdwm is an extremely fast, small, and dynamic window
 manager for X.
 
 This is my current build that I personally use and
@@ -21,26 +21,27 @@ xbps-install libX11 libXft libXinerama libX11-devel libXft-devel libXinerama-dev
 
 Installation
 ------------
-Edit config.mk to match your local setup (dwm is
+Edit config.mk to match your local setup (vdwm is
 installed into the /usr/local namespace by default).
 
 **No need to edit if you use VOIDLINUX**
 
-Afterwards enter the following command to build and install dwm (if
+Afterwards enter the following command to build and install vdwm (if
 necessary as root):
 
 ```sh
 make clean install
 ```
 
-Running dwm
+Running vdwm
 -----------
-Add the following line to your .xinitrc to start dwm using startx:
+Add the following line to your .xinitrc to start vdwm using startx:
 ```sh
-exec dwm
+exec vdwm
 ```
-This uses a autostart script from the directory ~/.local/share/dwm/autostart.sh
-so be sure to make that file and make it executable using `chmod +x`.
+This uses an autostart script from `~/.local/share/vdwm/autostart.sh`
+with a fallback to `~/.vdwm/autostart.sh`, so make that file executable
+using `chmod +x`.
 
 You can find an example of this script [here](https://github.com/iamb4uc/dots/blob/main/.local/share/dwm/autostart.sh)
 

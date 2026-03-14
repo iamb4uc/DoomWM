@@ -1,4 +1,4 @@
-# dwm - dynamic window manager
+# vdwm - dynamic window manager
 # See LICENSE file for copyright and license details.
 
 include config.mk
@@ -19,9 +19,6 @@ options:
 
 ${OBJ}: config.h config.mk
 
-config.h:
-	cp config.def.h $@
-
 vdwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
@@ -30,8 +27,8 @@ clean:
 
 dist: clean
 	mkdir -p vdwm-${VERSION}
-	cp -R LICENSE Makefile README config.def.h config.mk\
-		vdwm.1 drw.h util.h ${SRC} vdwm.png transient.c vdwm-${VERSION}
+	cp -R LICENSE Makefile README.md config.h config.mk fibonacci.c\
+		vdwm.1 vdrw.h util.h ${SRC} transient.c vdwm-${VERSION}
 	tar -cf vdwm-${VERSION}.tar vdwm-${VERSION}
 	gzip vdwm-${VERSION}.tar
 	rm -rf vdwm-${VERSION}

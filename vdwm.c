@@ -299,8 +299,8 @@ static pid_t winpid(Window w);
 /* variables */
 static const char autostartblocksh[] = "autostart_blocking.sh";
 static const char autostartsh[] = "autostart.sh";
+static const char autostartdir[] = "vdwm";
 static const char broken[] = "broken";
-static const char dwmdir[] = "dwm";
 static const char localshare[] = ".local/share";
 static char stext[256];
 static int screen;
@@ -484,7 +484,7 @@ void swallow(Client *p, Client *c) {
 
   if (c->noswallow || c->isterminal)
     return;
-  if (c->noswallow && !swallowfloating && c->isfloating)
+  if (!swallowfloating && c->isfloating)
     return;
 
   detach(c);
@@ -1456,30 +1456,31 @@ void runautostart(void) {
   char *path;
   char *xdgdatahome;
   char *home;
+  size_t pathlen;
   struct stat sb;
 
   if ((home = getenv("HOME")) == NULL)
     /* this is almost impossible */
     return;
 
-  /* if $XDG_DATA_HOME is set and not empty, use $XDG_DATA_HOME/dwm,
-   * otherwise use ~/.local/share/dwm as autostart script directory
+  /* if $XDG_DATA_HOME is set and not empty, use $XDG_DATA_HOME/vdwm,
+   * otherwise use ~/.local/share/vdwm as autostart script directory
    */
   xdgdatahome = getenv("XDG_DATA_HOME");
   if (xdgdatahome != NULL && *xdgdatahome != '\0') {
     /* space for path segments, separators and nul */
-    pathpfx = ecalloc(1, strlen(xdgdatahome) + strlen(dwmdir) + 2);
+    pathpfx = ecalloc(1, strlen(xdgdatahome) + strlen(autostartdir) + 2);
 
-    if (sprintf(pathpfx, "%s/%s", xdgdatahome, dwmdir) <= 0) {
+    if (sprintf(pathpfx, "%s/%s", xdgdatahome, autostartdir) <= 0) {
       free(pathpfx);
       return;
     }
   } else {
     /* space for path segments, separators and nul */
     pathpfx =
-        ecalloc(1, strlen(home) + strlen(localshare) + strlen(dwmdir) + 3);
+        ecalloc(1, strlen(home) + strlen(localshare) + strlen(autostartdir) + 3);
 
-    if (sprintf(pathpfx, "%s/%s/%s", home, localshare, dwmdir) < 0) {
+    if (sprintf(pathpfx, "%s/%s/%s", home, localshare, autostartdir) < 0) {
       free(pathpfx);
       return;
     }
@@ -1488,26 +1489,31 @@ void runautostart(void) {
   /* check if the autostart script directory exists */
   if (!(stat(pathpfx, &sb) == 0 && S_ISDIR(sb.st_mode))) {
     /* the XDG conformant path does not exist or is no directory
-     * so we try ~/.dwm instead
+     * so we try ~/.vdwm instead
      */
-    char *pathpfx_new = realloc(pathpfx, strlen(home) + strlen(dwmdir) + 3);
+    char *pathpfx_new =
+        realloc(pathpfx, strlen(home) + strlen(autostartdir) + 3);
     if (pathpfx_new == NULL) {
       free(pathpfx);
       return;
     }
     pathpfx = pathpfx_new;
 
-    if (sprintf(pathpfx, "%s/.%s", home, dwmdir) <= 0) {
+    if (sprintf(pathpfx, "%s/.%s", home, autostartdir) <= 0) {
       free(pathpfx);
       return;
     }
   }
 
+  pathlen = strlen(pathpfx) +
+            MAX(strlen(autostartblocksh), strlen(autostartsh)) + 4;
+
   /* try the blocking script first */
-  path = ecalloc(1, strlen(pathpfx) + strlen(autostartblocksh) + 2);
+  path = ecalloc(1, pathlen);
   if (sprintf(path, "%s/%s", pathpfx, autostartblocksh) <= 0) {
     free(path);
     free(pathpfx);
+    return;
   }
 
   if (access(path, X_OK) == 0)
@@ -1517,10 +1523,17 @@ void runautostart(void) {
   if (sprintf(path, "%s/%s", pathpfx, autostartsh) <= 0) {
     free(path);
     free(pathpfx);
+    return;
   }
 
-  if (access(path, X_OK) == 0)
-    system(strcat(path, " &"));
+  if (access(path, X_OK) == 0) {
+    if (sprintf(path, "%s/%s &", pathpfx, autostartsh) <= 0) {
+      free(path);
+      free(pathpfx);
+      return;
+    }
+    system(path);
+  }
 
   free(pathpfx);
   free(path);
@@ -1720,7 +1733,7 @@ void setup(void) {
   XChangeProperty(dpy, wmcheckwin, netatom[NetWMCheck], XA_WINDOW, 32,
                   PropModeReplace, (unsigned char *)&wmcheckwin, 1);
   XChangeProperty(dpy, wmcheckwin, netatom[NetWMName], utf8string, 8,
-                  PropModeReplace, (unsigned char *)"dwm", 3);
+                  PropModeReplace, (unsigned char *)"vdwm", 4);
   XChangeProperty(dpy, root, netatom[NetWMCheck], XA_WINDOW, 32,
                   PropModeReplace, (unsigned char *)&wmcheckwin, 1);
   /* EWMH support per view */
@@ -1790,7 +1803,7 @@ void spawn(const Arg *arg) {
       close(ConnectionNumber(dpy));
     setsid();
     execvp(((char **)arg->v)[0], (char **)arg->v);
-    die("dwm: execvp '%s' failed:", ((char **)arg->v)[0]);
+    die("vdwm: execvp '%s' failed:", ((char **)arg->v)[0]);
   }
 }
 
@@ -1972,7 +1985,7 @@ void updatebars(void) {
   XSetWindowAttributes wa = {.override_redirect = True,
                              .background_pixmap = ParentRelative,
                              .event_mask = ButtonPressMask | ExposureMask};
-  XClassHint ch = {"dwm", "dwm"};
+  XClassHint ch = {"vdwm", "vdwm"};
   for (m = mons; m; m = m->next) {
     if (m->barwin)
       continue;
@@ -2143,7 +2156,7 @@ void updatesizehints(Client *c) {
 
 void updatestatus(void) {
   if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
-    strcpy(stext, "dwm-" VERSION);
+    strcpy(stext, "vdwm-" VERSION);
   drawbar(selmon);
 }
 
@@ -2359,7 +2372,7 @@ int xerror(Display *dpy, XErrorEvent *ee) {
       (ee->request_code == X_GrabKey && ee->error_code == BadAccess) ||
       (ee->request_code == X_CopyArea && ee->error_code == BadDrawable))
     return 0;
-  fprintf(stderr, "dwm: fatal error: request code=%d, error code=%d\n",
+  fprintf(stderr, "vdwm: fatal error: request code=%d, error code=%d\n",
           ee->request_code, ee->error_code);
   return xerrorxlib(dpy, ee); /* may call exit */
 }
@@ -2369,7 +2382,7 @@ int xerrordummy(Display *dpy, XErrorEvent *ee) { return 0; }
 /* Startup Error handler to check if another window manager
  * is already running. */
 int xerrorstart(Display *dpy, XErrorEvent *ee) {
-  die("dwm: another window manager is already running");
+  die("vdwm: another window manager is already running");
   return -1;
 }
 
@@ -2385,15 +2398,15 @@ void zoom(const Arg *arg) {
 
 int main(int argc, char *argv[]) {
   if (argc == 2 && !strcmp("-v", argv[1]))
-    die("dwm-" VERSION);
+    die("vdwm-" VERSION);
   else if (argc != 1)
-    die("usage: dwm [-v]");
+    die("usage: vdwm [-v]");
   if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
     fputs("warning: no locale support\n", stderr);
   if (!(dpy = XOpenDisplay(NULL)))
-    die("dwm: cannot open display");
+    die("vdwm: cannot open display");
   if (!(xcon = XGetXCBConnection(dpy)))
-    die("dwm: cannot get xcb connection\n");
+    die("vdwm: cannot get xcb connection\n");
   checkotherwm();
   setup();
 #ifdef __OpenBSD__
