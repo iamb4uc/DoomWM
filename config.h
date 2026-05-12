@@ -9,9 +9,9 @@ static const int topbar = 0;            /* 0 means bottom bar */
 /* 0 means that vdwm will calculate bar height, >= 1 means vdwm will user_bh as
  * bar height */
 static const int user_bh = 30;
-static const char *fonts[] = {"JetBrainsMono Nerd Font:size=12:antialias=true"};
+static const char *fonts[] = {"DepartureMono Nerd Font:size=12:antialias=true"};
 static const char dmenufont[] =
-    "JetBrainsMono Nerd Font:size=15:antialias=true";
+    "DepartureMono Nerd Font:size=15:antialias=true";
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = {"alacritty", "-t",     scratchpadname,
                                       "-g", "120x34", NULL};
