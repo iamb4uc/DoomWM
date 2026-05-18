@@ -88,7 +88,7 @@ static const Layout layouts[] = {
  * Pdf Reader:           zathura
  * Mail:                 thunderbird
  * Password Manager:     keepassxc
- * Lock Screen:          slock
+ * Lock Screen:          doomlock
  */
 
 /* TUI Application */
@@ -127,7 +127,7 @@ static const char *ss[] = {"flameshot", "gui", NULL};
 static const char *mail[] = {"thunderbird", NULL};
 static const char *notes[] = {"obsidian", NULL};
 static const char *slp[] = {"/bin/sh", "-c",
-                            "slock & sleep 1; loginctl suspend -i", NULL};
+                            "doomlock & sleep 1; loginctl suspend -i", NULL};
 
 /* key definitions */
 #define MODKEY Mod1Mask

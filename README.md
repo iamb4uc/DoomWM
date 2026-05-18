@@ -8,7 +8,7 @@ Sure It might not be the best looking or even
 working window manager or other wm but with this you will
 never need a mouse for your workflow, everything is
 perfectly useable when combined with the
-[dotfiles](https://github.com/iamb4uc/dots.git) I have.
+[dotfiles](https://github.com/iamb4uc/DoomDots.git) I have.
 
 Features
 --------
@@ -54,7 +54,7 @@ DoomWM executes the autostart scripts directly. Keep the `#!/bin/sh` line at the
 top of the script; background long-running commands inside the script with `&`.
 
 Also, this works very well when used with my
-[dots](https://github.com/iamb4uc/dots.git)
+[DoomDots](https://github.com/iamb4uc/DoomDots.git)
 [DoomTerm config](https://github.com/iamb4uc/DoomTerm.git)
 [DoomMenu config](https://github.com/iamb4uc/DoomMenu.git)
 and lastly my
