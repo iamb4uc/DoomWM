@@ -6,35 +6,37 @@ static const unsigned int gappx = 20;   /* gaps between windows */
 static const unsigned int snap = 20;    /* snap pixel */
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 0;            /* 0 means bottom bar */
-/* 0 means that vdwm will calculate bar height, >= 1 means vdwm will user_bh as
- * bar height */
+static const int showsystray = 1;       /* 0 means no systray */
+static const int systrayspacing = 2;    /* systray icon spacing */
+/* 0 means that doomwm will calculate bar height, >= 1 means doomwm will use
+ * user_bh as bar height */
 static const int user_bh = 30;
 static const char *fonts[] = {"DepartureMono Nerd Font:size=12:antialias=true"};
 static const char dmenufont[] =
     "DepartureMono Nerd Font:size=15:antialias=true";
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = {"alacritty", "-t",     scratchpadname,
+static const char *scratchpadcmd[] = {"doomterm", "-t",     scratchpadname,
                                       "-g", "120x34", NULL};
 /* 1 means swallow floating windows by default */
 static const int swallowfloating = 1;
-static const char col_gray1[] = "#1e1e2e";
-static const char col_gray2[] = "#1e1e2e";
-static const char col_gray3[] = "#cdd6f4";
-static const char col_gray4[] = "#1e1e2e";
-static const char col_cyan[] = "#cdd6f4";
+static const char col_gray1[] = "#1d2021";
+static const char col_gray2[] = "#1d2021";
+static const char col_gray3[] = "#ebdbb2";
+static const char col_gray4[] = "#1d2021";
+static const char col_cyan[] = "#ebdbb2";
 static const char *colors[][3] = {
     /*               fg         bg         border   */
     [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
     [SchemeSel] = {col_gray4, col_cyan, col_cyan},
-    [SchemeStatus] = {col_cyan, col_gray1, "#1e1e2e"},
-    [SchemeTagsSel] = {col_gray4, col_cyan, "#1e1e2e"},
-    [SchemeTagsNorm] = {col_gray3, col_gray1, "#1e1e2e"},
-    [SchemeInfoSel] = {col_gray4, col_cyan, "#1e1e2e"},
-    [SchemeInfoNorm] = {col_gray3, col_gray1, "#1e1e2e"},
+    [SchemeStatus] = {col_cyan, col_gray1, "#1d2021"},
+    [SchemeTagsSel] = {col_gray4, col_cyan, "#1d2021"},
+    [SchemeTagsNorm] = {col_gray3, col_gray1, "#1d2021"},
+    [SchemeInfoSel] = {col_gray4, col_cyan, "#1d2021"},
+    [SchemeInfoNorm] = {col_gray3, col_gray1, "#1d2021"},
 };
 
 /* tagging */
-static const char *tags[] = {"1",  "2",  "3",  "4", "5", "6", "7", "8", "9"};
+static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -45,11 +47,11 @@ static const Rule rules[] = {
        mask     isfloating   isterminal  noswallow  monitor */
     {"Gimp", NULL, NULL, 0, 0, 0, 0, -1},
     {"Firefox", NULL, NULL, 0, 0, 0, -1, -1},
-    {"alacritty", NULL, NULL, 0, 0, 1, 0, -1},
+    {"doomterm", NULL, NULL, 0, 0, 1, 0, -1},
     {NULL, NULL, "Event Tester", 0, 0, 0, 1, -1}, /* xev */
-    {"alacritty", "alacritty", "pulsemixer", 0, 1, 0, 0, -1},
-    /*{"alacritty", "alacritty", "ncmpcpp", 0, 1, 0, 0, -1},*/
-    {"alacritty", "alacritty", "peaclock", 0, 1, 0, 0, -1},
+    {"doomterm", "doomterm", "pulsemixer", 0, 1, 0, 0, -1},
+    /*{"doomterm", "doomterm", "ncmpcpp", 0, 1, 0, 0, -1},*/
+    {"doomterm", "doomterm", "peaclock", 0, 1, 0, 0, -1},
     {NULL, NULL, "Picture in picture", 0, 1, 0, 0, -1},
 };
 
@@ -78,8 +80,8 @@ static const Layout layouts[] = {
  * Notes:                obsidian
  * Ide:                  neovim
  * Music:                ncmpcpp + mpd
- * Terminal:             alacritty
- * Application Launcher: dmenu
+ * Terminal:             doomterm
+ * Application Launcher: doommenu
  * Network:              NetworkManager
  * Utility:              htop, pulsemixer, xbacklight
  * File Browser:         lf
@@ -90,17 +92,17 @@ static const Layout layouts[] = {
  */
 
 /* TUI Application */
-static const char *nvim[] = {"alacritty", "-e", "nvim", NULL};
-static const char *tmuxnew[] = {"alacritty", "-e", "tmux", NULL};
-static const char *tmuxattach[] = {"alacritty", "-e", "tmux", "a", NULL};
-static const char *fb[] = {"alacritty", "-e", "lfub", NULL};
-static const char *mixer[] = {"alacritty", "-e", "pulsemixer", NULL};
-static const char *htop[] = {"alacritty", "-e", "htop", NULL};
-static const char *music[] = {"alacritty", "-e", "ncmpcpp", NULL};
-static const char *netman[] = {"alacritty", "-e", "nmtui", NULL};
+static const char *nvim[] = {"doomterm", "-e", "nvim", NULL};
+static const char *tmuxnew[] = {"doomterm", "-e", "tmux", NULL};
+static const char *tmuxattach[] = {"doomterm", "-e", "tmux", "a", NULL};
+static const char *fb[] = {"doomterm", "-e", "lfub", NULL};
+static const char *mixer[] = {"doomterm", "-e", "pulsemixer", NULL};
+static const char *htop[] = {"doomterm", "-e", "htop", NULL};
+static const char *music[] = {"doomterm", "-e", "ncmpcpp", NULL};
+static const char *netman[] = {"doomterm", "-e", "nmtui", NULL};
 static const char *netkill[] = {"nmcli", "r", "wifi", "off", NULL};
 static const char *netrecover[] = {"nmcli", "r", "wifi", "on", NULL};
-static const char *chkdsk[] = {"alacritty", "-e", "ncdu", NULL};
+static const char *chkdsk[] = {"doomterm", "-e", "ncdu", NULL};
 static const char *exitses[] = {"sysact", NULL};
 
 /* Music */
@@ -124,7 +126,8 @@ static const char *pdf[] = {"zathura", NULL};
 static const char *ss[] = {"flameshot", "gui", NULL};
 static const char *mail[] = {"thunderbird", NULL};
 static const char *notes[] = {"obsidian", NULL};
-static const char *slp[] = {"slock", "loginctl", "suspend", "-i", NULL};
+static const char *slp[] = {"/bin/sh", "-c",
+                            "slock & sleep 1; loginctl suspend -i", NULL};
 
 /* key definitions */
 #define MODKEY Mod1Mask
@@ -140,8 +143,8 @@ static const char *slp[] = {"slock", "loginctl", "suspend", "-i", NULL};
   }
 
 /* commands */
-static const char *dmenucmd[] = {"dmenu_run", NULL};
-static const char *termcmd[] = {"alacritty", NULL};
+static const char *doommenucmd[] = {"doommenu_run", NULL};
+static const char *termcmd[] = {"doomterm", NULL};
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
@@ -183,12 +186,12 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_F12, spawn, {.v = mail}},
     {MODKEY | ShiftMask, XK_n, spawn, {.v = notes}},
 
-    /*                       dmenu    APPLICATIONS                      */
-    {MODKEY, XK_d, spawn, {.v = dmenucmd}},
+    /*                       doommenu    APPLICATIONS                      */
+    {MODKEY, XK_d, spawn, {.v = doommenucmd}},
     {MODKEY | ShiftMask, XK_q, spawn, {.v = exitses}},
     {MODKEY, XK_F11, spawn, {.v = slp}},
 
-    /*                              VDWM SETTINGS                        */
+    /*                              DOOMWM SETTINGS                        */
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},

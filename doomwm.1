@@ -1,14 +1,14 @@
-.\" vdwm – Very Dynamic Window Manager
+.\" DoomWM - dynamic window manager
 .\" SPDX-License-Identifier: MIT
-.TH VDWM 1 "August 2025" "vdwm\-VERSION"
+.TH DOOMWM 1 "August 2025" "doomwm\-VERSION"
 .SH NAME
-vdwm \- a very dynamic window manager
+doomwm \- a very dynamic window manager
 .SH SYNOPSIS
-.B vdwm
+.B doomwm
 .RB [ \-v ]
 .SH DESCRIPTION
-\fBvdwm\fP is a lightweight, tiling window manager for X11 that extends the
-classic \fBdwm\fP workflow with extra layouts, adjustable gaps and a
+\fBDoomWM\fP is a lightweight, tiling window manager for X11 with extra
+layouts, adjustable gaps and a
 bottom-aligned status bar.  Windows are organised by \fItags\fP, and a view can
 display one or many tags at once.  Focus is indicated with a colour-encoded
 zero-pixel border.
@@ -17,7 +17,12 @@ Key features:
 .IP \[bu] 2
 Runtime-adjustable 20 px gaps between clients.
 .IP \[bu]
+Per-tag memory for layout, gaps, master count, bar visibility and master-area
+size.
+.IP \[bu]
 Status bar at the screen bottom (toggleable, fixed height optional).
+.IP \[bu]
+Plain numbered tag labels, and the bar can host XEmbed system-tray icons.
 .IP \[bu]
 Additional layouts: \fIspiral\fP, \fIdwindle\fP, \fIcenteredmaster\fP and
 \fIcenteredfloatingmaster\fP, alongside \fItile\fP, \fIfloating\fP and
@@ -51,18 +56,18 @@ Toggle the clicked tag on the focused window.
 The modifier is \fBMod1\fP (Alt).  Core window-manager bindings:
 .TP
 .BR Mod1\-Shift\-Return
-Launch \fBst\fP.
+Launch \fBdoomterm\fP.
 .TP
 .BR Mod1\-d
-Launch \fBdmenu\fP.
+Launch \fBdoommenu\fP.
 .TP
 .BR Mod1\-b
 Toggle the status bar.
 .TP
-.BR Mod1\-t ", " Mod1\-f ", " Mod1\-m
+.BR Mod1\-t ", " Mod1\-Shift\-y ", " Mod1\-y
 Tile, floating or monocle layout.
 .TP
-.BR Mod1\-y " / " Mod1\-Shift\-y
+.BR Mod1\-i " / " Mod1\-Shift\-i
 Centered master / centered floating-master.
 .TP
 .BR Mod1\-u " / " Mod1\-Shift\-u
@@ -74,7 +79,7 @@ Restore previous layout.
 .BR Mod1\-j ", " Mod1\-k
 Focus next / previous window.
 .TP
-.BR Mod1\-i ", " Mod1\-d
+.BR Mod1\-o ", " Mod1\-p
 Increase / decrease master-area client count.
 .TP
 .BR Mod1\-h ", " Mod1\-l
@@ -95,6 +100,9 @@ Restore previous tag set.
 .BR Mod1\-[1..9] " / " Mod1\-Shift\-[1..9]
 View / tag windows.
 .TP
+.BR Mod1\-0 " / " Mod1\-Shift\-0
+View / tag all tags.
+.TP
 .BR Mod1\--
 Decrease gaps.
 .TP
@@ -106,6 +114,9 @@ Reset gaps to 0.
 .TP
 .BR Mod1\-Shift\-x
 Quit (\fBMod1\-Control\-Shift\-q\fP to restart).
+.TP
+.BR Mod1\-F11
+Start \fBslock\fP, then suspend with \fBloginctl\fP.
 .P
 See
 .BR config.h
@@ -121,15 +132,14 @@ Toggle floating.
 .BR Mod1\-Button3
 Resize window (forces floating).
 .SH FILES
-Startup scripts are searched in order:
-.IP "1. \$XDG_DATA_HOME/vdwm"
-.IP "2. \$HOME/.local/share/vdwm"
-.IP "3. \$HOME/.vdwm"
+Startup scripts are loaded from \fB$XDG_DATA_HOME/doomwm\fP. If
+\fB$XDG_DATA_HOME\fP is unset, DoomWM uses
+\fB$HOME/.local/share/doomwm\fP.
 .P
 If present, the following scripts are executed:
 .TP 15
 .B autostart_blocking.sh
-Runs synchronously; vdwm waits for completion.
+Runs synchronously; DoomWM waits for completion.
 .TP
 .B autostart.sh
 Runs asynchronously before the event loop.
@@ -144,19 +154,19 @@ and compiled in:
 .SH SIGNALS
 .TP
 .B SIGHUP
-Restart vdwm (after recompiling).
+Restart DoomWM (after recompiling).
 .TP
 .B SIGTERM
 Exit cleanly.
 .SH SEE ALSO
-.BR dmenu (1),
-.BR st (1)
+.BR doommenu (1),
+.BR doomterm (1)
 .SH PROJECT
 Source code and issue tracker:
 .P
 .RS
-https://github.com/iamb4uc/vdwm
+https://github.com/iamb4uc/DoomWM
 .RE
 .SH BUGS
 Report problems or submit patches by opening an issue or pull request at
-https://github.com/iamb4uc/vdwm .
+https://github.com/iamb4uc/DoomWM .
