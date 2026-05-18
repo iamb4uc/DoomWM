@@ -1,0 +1,10 @@
+doomwm
+DoomWM
+vdwm
+*.o
+doomwm-*.tar
+doomwm-*.tar.gz
+DoomWM-*.tar
+DoomWM-*.tar.gz
+vdwm-*.tar
+vdwm-*.tar.gz
