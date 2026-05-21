@@ -2147,6 +2147,10 @@ void updatebars(void) {
   XSetWindowAttributes wa = {.override_redirect = True,
                              .background_pixmap = ParentRelative,
                              .event_mask = ButtonPressMask | ExposureMask};
+  XSetWindowAttributes traywa = {
+      .override_redirect = True,
+      .background_pixel = scheme[SchemeStatus][ColBg].pixel,
+      .event_mask = ButtonPressMask | ExposureMask | SubstructureNotifyMask};
   XClassHint ch = {"doomwm", "doomwm"};
   for (m = mons; m; m = m->next) {
     if (m->barwin)
@@ -2164,10 +2168,8 @@ void updatebars(void) {
     systray->win = XCreateWindow(
         dpy, root, selmon->wx + selmon->ww, selmon->by, 1, bh, 0,
         DefaultDepth(dpy, screen), CopyFromParent, DefaultVisual(dpy, screen),
-        CWOverrideRedirect | CWBackPixmap | CWEventMask, &wa);
+        CWOverrideRedirect | CWBackPixel | CWEventMask, &traywa);
     XSetClassHint(dpy, systray->win, &ch);
-    XSelectInput(dpy, systray->win,
-                 ButtonPressMask | ExposureMask | SubstructureNotifyMask);
     XSetSelectionOwner(dpy, netatom[NetSystemTray], systray->win, CurrentTime);
     if (XGetSelectionOwner(dpy, netatom[NetSystemTray]) == systray->win) {
       XEvent ev = {0};
@@ -2266,6 +2268,8 @@ void updatesystray(void) {
   }
   XMoveResizeWindow(dpy, systray->win, selmon->wx + selmon->ww - w, selmon->by,
                     w ? w : 1, bh);
+  XSetWindowBackground(dpy, systray->win, scheme[SchemeStatus][ColBg].pixel);
+  XClearWindow(dpy, systray->win);
   if (selmon->showbar)
     XMapRaised(dpy, systray->win);
   else
